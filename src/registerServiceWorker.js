@@ -1,3 +1,6 @@
+/* globals window, URL, navigator, fetch */
+/* eslint no-use-before-define: ["error", { "functions": false }] */
+/* eslint no-param-reassign: ["error", { "props": false }] */
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
