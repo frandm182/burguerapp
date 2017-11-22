@@ -4945,7 +4945,7 @@ promise@^7.1.1:
 
 prop-types@^15.6.0:
   version "15.6.0"
-  resolved "http://intersinopia:4873/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.3.1"
