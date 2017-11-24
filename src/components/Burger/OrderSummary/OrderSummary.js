@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AuxHoc from '../../../hoc/AuxHoc';
+import AuxHoc from '../../../hoc/AuxHoc/AuxHoc';
 import Button from '../../UI/Button/Button';
 
 const orderSummary = ({
