@@ -1,18 +1,38 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AuxHoc from '../../hoc/AuxHoc';
-import Toolbar from '../Navigation/Toolbar/Toolbar';
+
+import Aux from '../../hoc/AuxHoc';
 import classes from './Layout.css';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
+import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
-const layout = ({ children }) => (
-  <AuxHoc>
-    <Toolbar />
-    <main className={classes.Content}>{children}</main>
-  </AuxHoc>
-);
+class Layout extends Component {
+  state = {
+    showSideDrawer: false
+  };
 
-layout.propTypes = {
-  children: PropTypes.node
-};
+  sideDrawerClosedHandler = () => {
+    this.setState({ showSideDrawer: false });
+  };
 
-export default layout;
+  sideDrawerToggleHandler = () => {
+    this.setState(prevState => ({ showSideDrawer: !prevState.showSideDrawer }));
+  };
+
+  render() {
+    return (
+      <Aux>
+        <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
+        <SideDrawer
+          open={this.state.showSideDrawer}
+          closed={this.sideDrawerClosedHandler}
+        />
+        <main className={classes.Content}>{this.props.children}</main>
+      </Aux>
+    );
+  }
+}
+
+Layout.propTypes = { children: PropTypes.node };
+
+export default Layout;
