@@ -1,8 +1,7 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 
-import NavigationItem from './NavigationItem/NavigationItem';
 import classes from './NavigationItems.css';
+import NavigationItem from './NavigationItem/NavigationItem';
 
 const navigationItems = () => (
   <ul className={classes.NavigationItems}>
@@ -12,7 +11,5 @@ const navigationItems = () => (
     <NavigationItem link="/">Checkout</NavigationItem>
   </ul>
 );
-
-navigationItems.propTypes = {};
 
 export default navigationItems;
