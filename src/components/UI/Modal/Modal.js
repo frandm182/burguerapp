@@ -1,29 +1,44 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Auxhoc from '../../../hoc/AuxHoc/AuxHoc';
-import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.css';
+import AuxHoc from '../../../hoc/AuxHoc/AuxHoc';
+import Backdrop from '../Backdrop/Backdrop';
 
-const modal = ({ children, show, closeModal }) => (
-  <Auxhoc>
-    <Backdrop show={show} clicked={closeModal} />
-    <div
-      className={classes.Modal}
-      style={{
-        transform: show ? 'translateY(0)' : 'translateY(-100vh)',
-        opacity: show ? 1 : 0
-      }}
-    >
-      {children}
-    </div>
-  </Auxhoc>
-);
+class Modal extends Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
+  }
 
-modal.propTypes = {
+  componentWillUpdate() {
+    console.log('[Modal] WillUpdate');
+  }
+
+  render() {
+    return (
+      <AuxHoc>
+        <Backdrop show={this.props.show} clicked={this.props.closeModal} />
+        <div
+          className={classes.Modal}
+          style={{
+            transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
+            opacity: this.props.show ? '1' : '0'
+          }}
+        >
+          {this.props.children}
+        </div>
+      </AuxHoc>
+    );
+  }
+}
+
+Modal.propTypes = {
   children: PropTypes.node,
   show: PropTypes.bool,
   closeModal: PropTypes.func
 };
 
-export default modal;
+export default Modal;
