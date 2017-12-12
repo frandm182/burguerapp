@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 
 class Checkout extends Component {
@@ -10,14 +12,32 @@ class Checkout extends Component {
       bacon: 1
     }
   };
+  checkoutCancelledHandler = () => {
+    this.props.history.goBack();
+  };
+
+  checkoutContinuedHandler = () => {
+    this.props.history.replace('/checkout/contact-data');
+  };
   render() {
     const { ingredients } = this.state;
     return (
       <div>
-        <CheckoutSummary ingredients={ingredients} />
+        <CheckoutSummary
+          ingredients={ingredients}
+          onCheckoutCancelled={this.checkoutCancelledHandler}
+          onCheckoutContinued={this.checkoutContinuedHandler}
+        />
       </div>
     );
   }
 }
+
+Checkout.propTypes = {
+  history: PropTypes.shape({
+    replace: PropTypes.func,
+    goBack: PropTypes.func
+  })
+};
 
 export default Checkout;
