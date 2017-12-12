@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in, no-restricted-syntax, prefer-const, no-undef */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -12,6 +13,17 @@ class Checkout extends Component {
       bacon: 1
     }
   };
+  componentDidMount() {
+    const query = new URLSearchParams(this.props.location.search);
+    const ingredients = {};
+    for (let param of query.entries()) {
+      ingredients[param[0]] = +param[1];
+    }
+    this.chargeIngredients(ingredients);
+  }
+
+  chargeIngredients = ingredients => this.setState({ ingredients });
+
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -37,6 +49,9 @@ Checkout.propTypes = {
   history: PropTypes.shape({
     replace: PropTypes.func,
     goBack: PropTypes.func
+  }),
+  location: PropTypes.shape({
+    search: PropTypes.string
   })
 };
 

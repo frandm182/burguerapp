@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in, no-restricted-syntax, prefer-const */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -96,7 +97,20 @@ class BurgerBuilder extends Component {
     //   .catch(() => {
     //     this.setState({ loading: false, purchasing: false });
     //   });
-    this.props.history.push('/checkout');
+
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        `${encodeURIComponent(i)}=${encodeURIComponent(
+          this.state.ingredients[i]
+        )}`
+      );
+    }
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?${queryString}`
+    });
   };
 
   render() {
