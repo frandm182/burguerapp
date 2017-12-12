@@ -1,7 +1,9 @@
 /* eslint-disable guard-for-in, no-restricted-syntax, prefer-const, no-undef */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Route } from 'react-router-dom';
 
+import ContactData from './ContactData/ContactData';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 
 class Checkout extends Component {
@@ -40,6 +42,10 @@ class Checkout extends Component {
           onCheckoutCancelled={this.checkoutCancelledHandler}
           onCheckoutContinued={this.checkoutContinuedHandler}
         />
+        <Route
+          path={`${this.props.match.path}/contact-data`}
+          component={ContactData}
+        />
       </div>
     );
   }
@@ -52,6 +58,9 @@ Checkout.propTypes = {
   }),
   location: PropTypes.shape({
     search: PropTypes.string
+  }),
+  match: PropTypes.shape({
+    path: PropTypes.string
   })
 };
 
