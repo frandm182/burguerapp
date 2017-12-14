@@ -1,4 +1,6 @@
+/* eslint-disable guard-for-in, no-restricted-syntax, prefer-const */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import AuxHoc from '../../hoc/AuxHoc/AuxHoc';
 import Burger from '../../components/Burger/Burger';
@@ -74,27 +76,20 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Fran',
-        address: {
-          street: '4545',
-          country: 'Spain'
-        }
-      },
-      deliveryMethod: 'fastest'
-    };
-    axios
-      .post('/orders.json', order)
-      .then(() => {
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch(() => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        `${encodeURIComponent(i)}=${encodeURIComponent(
+          this.state.ingredients[i]
+        )}`
+      );
+    }
+    queryParams.push(`price=${this.state.totalPrice}`);
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?${queryString}`
+    });
   };
 
   render() {
@@ -150,4 +145,9 @@ class BurgerBuilder extends Component {
     );
   }
 }
+BurgerBuilder.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func
+  })
+};
 export default withErrorHandler(BurgerBuilder, axios);
