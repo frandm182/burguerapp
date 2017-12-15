@@ -6,12 +6,16 @@ import classes from './Input.css';
 
 const input = props => {
   let inputElement = null;
+  const inputClasses = [classes.InputElement];
+  if (props.invalid && props.shouldValidate && props.touched) {
+    inputClasses.push(classes.Invalid);
+  }
   switch (props.elementType) {
     case 'input':
       inputElement = (
         <input
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           {...props.elementConfig}
           value={props.value}
         />
@@ -21,7 +25,7 @@ const input = props => {
       inputElement = (
         <textarea
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           {...props.elementConfig}
           value={props.value}
         />
@@ -31,7 +35,7 @@ const input = props => {
       inputElement = (
         <select
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           value={props.value}
         >
           {props.elementConfig.options.map(option => (
@@ -45,7 +49,8 @@ const input = props => {
     default:
       inputElement = (
         <input
-          className={classes.InputElement}
+          onChange={props.changed}
+          className={inputClasses.join(' ')}
           {...props.elementConfig}
           value={props.value}
         />
@@ -64,6 +69,9 @@ input.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   changed: PropTypes.func,
+  invalid: PropTypes.bool,
+  shouldValidate: PropTypes.bool,
+  touched: PropTypes.bool,
   elementConfig: PropTypes.shape({
     options: PropTypes.arrayOf(
       PropTypes.shape({
