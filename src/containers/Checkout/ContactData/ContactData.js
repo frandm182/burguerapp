@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unused-state */
+/* eslint-disable react/no-unused-state, guard-for-in, no-restricted-syntax, react/no-array-index-key */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -11,11 +11,57 @@ import classes from './ContactData.css';
 
 class ContactData extends Component {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name'
+        },
+        value: ''
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Street'
+        },
+        value: ''
+      },
+      zipCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Zip Code'
+        },
+        value: ''
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country Name'
+        },
+        value: ''
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Email'
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' }
+          ]
+        },
+        value: ''
+      }
     },
     loading: false
   };
@@ -25,15 +71,7 @@ class ContactData extends Component {
     this.setState({ loading: true });
     const order = {
       ingredients: this.props.ingredients,
-      price: this.props.price,
-      customer: {
-        name: 'Fran',
-        address: {
-          street: '4545',
-          country: 'Spain'
-        }
-      },
-      deliveryMethod: 'fastest'
+      price: this.props.price
     };
     axios
       .post('/orders.json', order)
@@ -46,32 +84,23 @@ class ContactData extends Component {
       });
   };
   render() {
+    const formsElementsArray = [];
+    for (const key in this.state.orderForm) {
+      formsElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key]
+      });
+    }
     let form = (
       <form>
-        <Input
-          inputType="input"
-          type="text"
-          name="name"
-          placeholder="Your Name..."
-        />
-        <Input
-          inputType="input"
-          type="email"
-          name="email"
-          placeholder="Your Email..."
-        />
-        <Input
-          inputType="input"
-          type="text"
-          name="street"
-          placeholder="Street..."
-        />
-        <Input
-          inputType="input"
-          type="text"
-          name="postal"
-          placeholder="Postal Code..."
-        />
+        {formsElementsArray.map(formElement => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+          />
+        ))}
         <Button btnType="Success" clicked={this.orderHandler}>
           ORDER
         </Button>
@@ -91,7 +120,7 @@ class ContactData extends Component {
 
 ContactData.propTypes = {
   ingredients: PropTypes.shape({}),
-  price: PropTypes.string,
+  price: PropTypes.number,
   history: PropTypes.shape({
     push: PropTypes.func
   })
