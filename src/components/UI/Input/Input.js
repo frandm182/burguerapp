@@ -6,7 +6,7 @@ import classes from './Input.css';
 
 const input = props => {
   let inputElement = null;
-  switch (props.inputType) {
+  switch (props.elementType) {
     case 'input':
       inputElement = (
         <input
@@ -23,6 +23,17 @@ const input = props => {
           {...props.elementConfig}
           value={props.value}
         />
+      );
+      break;
+    case 'select':
+      inputElement = (
+        <select className={classes.InputElement} value={props.value}>
+          {props.elementConfig.options.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.displayValue}
+            </option>
+          ))}
+        </select>
       );
       break;
     default:
@@ -43,10 +54,17 @@ const input = props => {
 };
 
 input.propTypes = {
-  inputType: PropTypes.string,
+  elementType: PropTypes.string,
   label: PropTypes.string,
-  elementConfig: PropTypes.shape({}),
-  value: PropTypes.string
+  value: PropTypes.string,
+  elementConfig: PropTypes.shape({
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        value: PropTypes.string,
+        displayValue: PropTypes.string
+      })
+    )
+  })
 };
 
 export default input;
